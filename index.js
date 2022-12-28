@@ -72,6 +72,13 @@ const run = async () => {
             const result = await tasksCollection.updateOne(filter, updatedDoc, option);
             res.send(result);
         })
+
+        // Getting completed task 
+        app.get('/completed', async (req, res) => {
+            const filter = { completed: true };
+            const data = await tasksCollection.find(filter).toArray();
+            res.send(data);
+        })
     }
     finally {
 
