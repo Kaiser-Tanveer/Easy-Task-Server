@@ -16,12 +16,13 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 const run = () => {
     try {
         // Creating database
-        const collection = client.db("easyTask").collection("tasks");
+        const tasksCollection = client.db("easyTask").collection("tasks");
 
         // Creating data 
         app.post('/task', async (req, res) => {
             const task = req.body;
-            console.log(task);
+            const result = await tasksCollection.insertOne(task);
+            res.send(result);
         })
     }
     finally {
