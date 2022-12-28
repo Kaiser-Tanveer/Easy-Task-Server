@@ -40,6 +40,14 @@ const run = async () => {
             res.send(result);
         })
 
+        // Getting details data by id
+        app.get('/details/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const details = await tasksCollection.findOne(filter);
+            res.send(details);
+        })
+
         // Updating Data 
         app.put('/updatedTask/:id', async (req, res) => {
             const id = req.params.id;
@@ -78,6 +86,19 @@ const run = async () => {
             const filter = { completed: true };
             const data = await tasksCollection.find(filter).toArray();
             res.send(data);
+        })
+
+        // Getting completed task 
+
+        app.put('/notCompleted/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const option = { upsert: true };
+            const updatedDoc = {
+                $set: { completed: false }
+            }
+            const result = await tasksCollection.updateOne(filter, updatedDoc, option);
+            res.send(result);
         })
     }
     finally {
