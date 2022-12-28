@@ -46,17 +46,30 @@ const run = async () => {
             const filter = { _id: ObjectId(id) };
             const option = { upsert: true };
             const updatedMsg = {
-                $set: { message: 'This is Updated' }
+                $set: { message: req.body }
             }
             console.log(updatedMsg);
             const result = await tasksCollection.updateOne(filter, updatedMsg, option);
             res.send(result);
         })
 
+        // Deleting Data 
         app.delete('/remove/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: ObjectId(id) };
             const result = await tasksCollection.deleteOne(filter);
+            res.send(result);
+        })
+
+        // Updating Completed Data 
+        app.put('/completed/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const option = { upsert: true };
+            const updatedDoc = {
+                $set: { completed: true }
+            }
+            const result = await tasksCollection.updateOne(filter, updatedDoc, option);
             res.send(result);
         })
     }
