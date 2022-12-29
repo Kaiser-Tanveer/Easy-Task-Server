@@ -51,13 +51,14 @@ const run = async () => {
         // Updating Data 
         app.put('/updatedTask/:id', async (req, res) => {
             const id = req.params.id;
-            const filter = { _id: ObjectId(id) };
-            const option = { upsert: true };
-            const updatedMsg = {
-                $set: { message: req.body }
-            }
-            console.log(updatedMsg);
-            const result = await tasksCollection.updateOne(filter, updatedMsg, option);
+            const query = { _id: ObjectId(id) };
+            const message = req.body;
+            const msg = Object.values(message).toString();
+            console.log(msg);
+            const updatedDoc = {
+                $set: { message: msg }
+            };
+            const result = await tasksCollection.updateOne(query, updatedDoc);
             res.send(result);
         })
 
